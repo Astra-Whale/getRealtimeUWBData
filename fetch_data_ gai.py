@@ -11,7 +11,7 @@ async def get_wss_data(url):
         while True:
             formatted_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
             filename = f"./data/{formatted_time}.json"
-            # print(filename)  # Log the new filename
+            print(filename)  # Log the new filename
             
             while True:
                 try:
@@ -24,14 +24,15 @@ async def get_wss_data(url):
                     
                     # Write data to file
                     with open(filename, 'a') as file:
-                        print("writing\n")
                         json.dump(json_data, file, indent=4)
                         file.write(',\n')
+                        print("writing\n")
+                        print(f"countdown: {json_data["game"]["countdown"]}\n")
                 
                 except asyncio.TimeoutError:
                     print("No data received in the last 5 seconds")
                 except (json.JSONDecodeError, KeyError) as e:
-                    print(f"Data parsing error: {e}")
+                    print(f"Data parsing error: {e}\nJson data: {json_data}")
                 except Exception as e:
                     print(f"An error occurred: {e}")
 
